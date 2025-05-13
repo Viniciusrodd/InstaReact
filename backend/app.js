@@ -13,8 +13,21 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// CORS
+app.use(cors({ 
+    credentials: true,
+    origin: 'http://localhost/5173' 
+}));
+
+// upload files directory
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+// db connection
+require('./config/db');
+
 // routes
 const router = require('./Routes/router');
+const exp = require('constants');
 app.use('/', router);
 
 // open server
