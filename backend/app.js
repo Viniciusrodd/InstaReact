@@ -26,7 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 require('./config/db');
 
 // routes
-const router = require('./Routes/router');
+const router = require('./Routes/Router');
 const exp = require('constants');
 app.use('/', router);
 
