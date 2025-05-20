@@ -18,7 +18,8 @@ const tokenGenerate = (id) =>{
 
 // register
 const register = async (req, res) =>{
-    res.send('register route');
+    const {name} = req.body;
+    res.send('register route, seu nome: ' + name);
 };
 
 
