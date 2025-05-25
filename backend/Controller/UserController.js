@@ -18,8 +18,34 @@ const tokenGenerate = (id) =>{
 
 // register
 const register = async (req, res) =>{
-    const {name} = req.body;
-    res.send('register route, seu nome: ' + name);
+    const {name, email, password} = req.body;
+
+    // check user already exist
+    const user = await UserModel.findOne({ email });
+    if(user){
+        res.status(422).json({ errors:['Por favor, utilize outro email...'] });
+        return;
+    }
+
+    // generate password hash
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(password, salt);
+
+    // create user
+    const newUser = await UserModel.create({
+        name, email, password: hash
+    });
+
+    // return token
+    if(!newUser){
+        res.status(422).json({ errors: ['Houve um erro na criação de usuário, por favor tente mais tarde...'] });
+        return;
+    }
+
+    res.status(201).json({
+        _id: newUser._id,
+        token: tokenGenerate(newUser._id)
+    });
 };
 
 

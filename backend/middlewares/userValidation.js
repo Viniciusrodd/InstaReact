@@ -2,6 +2,8 @@
 // libs
 const { body } = require('express-validator');
 
+
+// user creation
 const userCreationValidation = () =>{
     return [
         // invalid name
@@ -31,6 +33,7 @@ const userCreationValidation = () =>{
     ];
 };
 
+
 module.exports = {
     userCreationValidation
-}
+};
