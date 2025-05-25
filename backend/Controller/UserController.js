@@ -50,8 +50,28 @@ const register = async (req, res) =>{
 
 
 // login
-const login = (req, res) =>{
-    res.send('login')
+const login = async (req, res) =>{
+    const { email, password } = req.body;
+
+    // check user existence
+    const user = await UserModel.findOne({ email })
+    if(!user){
+        res.status(404).json({ errors: ['O usuário não foi encontrado...'] });
+        return;
+    }
+
+    // check password compares
+    if( !(await bcrypt.compare(password, user.password)) ){
+        res.status(422).json({ errors: ['Senha inválida...'] });
+        return;        
+    }
+
+    // user + token
+    res.status(201).json({
+        _id: user._id,
+        profileImage: user.profileImage,
+        token: tokenGenerate(user._id)
+    });
 };
 
 
