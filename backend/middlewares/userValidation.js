@@ -3,7 +3,7 @@
 const { body } = require('express-validator');
 
 
-// user creation
+// user creation validations
 const userCreationValidation = () =>{
     return [
         // invalid name
@@ -34,6 +34,19 @@ const userCreationValidation = () =>{
 };
 
 
+// login validations
+const loginValidation = () =>{
+    return [
+        body('email')
+            .isString().withMessage('O email é obrigatório...')
+            .isEmail().withMessage('Insira um email válido...'),
+        body('password')
+            .isString().withMessage('A senha é obrigatória...')
+    ];
+};
+
+
 module.exports = {
-    userCreationValidation
+    userCreationValidation,
+    loginValidation
 };
