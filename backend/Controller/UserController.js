@@ -36,12 +36,13 @@ const register = async (req, res) =>{
         name, email, password: hash
     });
 
-    // return token
+    // new user verify
     if(!newUser){
         res.status(422).json({ errors: ['Houve um erro na criação de usuário, por favor tente mais tarde...'] });
         return;
     }
 
+    // return token
     res.status(201).json({
         _id: newUser._id,
         token: tokenGenerate(newUser._id)
