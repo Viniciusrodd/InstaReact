@@ -11,7 +11,7 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const authGuard = async (req, res, next) =>{
     const authHeader = req.headers['authorization'];
-    const token = authGuard && authGuard.split(' ')[1]; // get only token
+    const token = authHeader && authHeader.split(' ')[1]; // get only token
     
     // check if header has a token
     if(!token) return res.status(401).json({ errors: ['Acesso negado...'] });
