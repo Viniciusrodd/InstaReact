@@ -5,6 +5,7 @@ const UserModel = require('../Models/User');
 // libs
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 
 // env
@@ -85,7 +86,28 @@ const getCurrentUser = async (req, res) =>{
 
 // update user
 const update = async (req, res) =>{
-    res.send('update');
+    const { name, password, bio } = req.body;
+    let profileImage = null;
+
+    if(req.file){
+        profileImage = req.file.filename;
+    }
+
+    const reqUser = req.user;
+    const user = await UserModel.findById(new mongoose.Types.ObjectId(reqUser._id)).select('-password');
+
+    if(name){ user.name = name };
+    if(password){
+        const salt = await bcrypt.genSalt();
+        const hash = await bcrypt.hash(password, salt);
+        user.password = hash;
+    }
+    if(profileImage){ user.profileImage = profileImage };
+    if(bio){ user.bio = bio };
+
+    // save at bd
+    await user.save();
+    res.status(200).json(user);
 };
 
 
