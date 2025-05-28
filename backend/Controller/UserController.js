@@ -111,10 +111,27 @@ const update = async (req, res) =>{
 };
 
 
+// get user by id
+const getUserById = async (req, res) =>{
+    const { id } = req.params;
+
+    let user;
+    try{
+        user = await UserModel.findById(new mongoose.Types.ObjectId(id)).select('-password');
+    }
+    catch(error){
+        return res.status(404).json({ errors:['usuário não encontrado'] });
+    }
+
+    res.status(200).json(user);
+};
+
+
 // exporting endpoints
 module.exports = {
     register,
     login,
     getCurrentUser,
-    update
+    update,
+    getUserById
 };
