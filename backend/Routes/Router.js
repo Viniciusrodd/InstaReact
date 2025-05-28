@@ -5,6 +5,8 @@ const router = express.Router();
 
 // using user routes...
 router.use('/api/users', require('./UserRoutes'));
+router.use('/api/photos', require('./PhotoRoutes'));
+
 
 // test
 router.get('/', (req, res) =>{
