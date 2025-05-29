@@ -57,7 +57,20 @@ const deletePhoto = async (req, res) =>{
 };
 
 
+// get all photos
+const getAllPhotos = async (req, res) =>{
+    // get
+    const photos = await PhotoModel.find({}).sort([
+        ['createdAt', -1] // more recents
+    ]).exec(); // exec is a confirm order to execute a query
+    if(!photos) return res.status(404).json({ errors:['Fotos não encontradas...'] });
+
+    return res.status(200).json(photos);
+};
+
+
 module.exports = {
     insertPhoto,
-    deletePhoto
+    deletePhoto,
+    getAllPhotos
 };
