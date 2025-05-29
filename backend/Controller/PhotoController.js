@@ -45,7 +45,7 @@ const deletePhoto = async (req, res) =>{
 
     // photo not belongs to user?
     if(!photo.userId.equals(reqUser._id)){
-        return res.status(422).json({ errors:['A foto não pertence ao usuário que tenta removê-la...'] });
+        return res.status(422).json({ errors:['A foto não pertence ao usuário...'] });
     }
 
     // delete
@@ -107,10 +107,41 @@ const getPhotoById = async (req, res) =>{
 };
 
 
+// update a photo title
+const updatePhotoTitle = async (req, res) =>{
+    const { id } = req.params;
+    const { title } = req.body;
+    const reqUser = req.user;
+
+    // photo exist?
+    let photo;
+    try{
+        photo = await PhotoModel.findById(new mongoose.Types.ObjectId(id));
+        if(!photo) return res.status(404).json({ errors:['Foto não encontrada...'] });        
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
+    }
+
+    // photo belongs to user?
+    if(!photo.userId.equals(reqUser._id)){
+        return res.status(422).json({ errors:['A foto não pertence ao usuário...'] });
+    }
+
+    // there is a title ?
+    if(title) photo.title = title
+    
+    // update
+    await photo.save();
+    return res.status(200).json({ photo, message:'Foto atualizada com sucesso!' });        
+};
+
+
 module.exports = {
     insertPhoto,
     deletePhoto,
     getAllPhotos,
     getUserPhotos,
-    getPhotoById
+    getPhotoById,
+    updatePhotoTitle
 };
