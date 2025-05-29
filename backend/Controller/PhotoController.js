@@ -69,8 +69,29 @@ const getAllPhotos = async (req, res) =>{
 };
 
 
+// get user photos
+const getUserPhotos = async (req, res) =>{
+    const { id } = req.params;
+
+    // find user photos
+    let photos;
+    try{
+        photos = await PhotoModel.find({ userId: id }).sort([
+            ['createdAt', -1]
+        ]).exec();
+        if(!photos) return res.status(404).json({ errors:['Fotos de usuário não encontradas...'] });
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto é inválido...'] });
+    }
+
+    return res.status(200).json(photos);    
+};
+
+
 module.exports = {
     insertPhoto,
     deletePhoto,
-    getAllPhotos
+    getAllPhotos,
+    getUserPhotos
 };
