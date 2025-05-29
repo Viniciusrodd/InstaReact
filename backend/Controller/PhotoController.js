@@ -40,7 +40,7 @@ const deletePhoto = async (req, res) =>{
         if(!photo) return res.status(404).json({ errors: ['Foto não encontrada...'] });
     }
     catch(error){
-        return res.status(400).json({ errors:['Id de foto é inválido...'] });
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
     }
 
     // photo not belongs to user?
@@ -82,10 +82,28 @@ const getUserPhotos = async (req, res) =>{
         if(!photos) return res.status(404).json({ errors:['Fotos de usuário não encontradas...'] });
     }
     catch(error){
-        return res.status(400).json({ errors:['Id de foto é inválido...'] });
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
     }
 
     return res.status(200).json(photos);    
+};
+
+
+// get photo by id
+const getPhotoById = async (req, res) =>{
+    const { id } = req.params;
+
+    // get photo
+    let photo;
+    try{
+        photo = await PhotoModel.findById(new mongoose.Types.ObjectId(id));
+        if(!photo) return res.status(404).json({ errors:['Foto não encontrada...'] });
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
+    }
+
+    return res.status(200).json(photo);    
 };
 
 
@@ -93,5 +111,6 @@ module.exports = {
     insertPhoto,
     deletePhoto,
     getAllPhotos,
-    getUserPhotos
+    getUserPhotos,
+    getPhotoById
 };
