@@ -137,11 +137,41 @@ const updatePhotoTitle = async (req, res) =>{
 };
 
 
+// like in photo
+const likePhoto = async (req, res) =>{
+    const { id } = req.params;
+    const reqUser = req.user;
+
+    // photo exist?
+    let photo;
+    try{
+        photo = await PhotoModel.findById(new mongoose.Types.ObjectId(id));
+        if(!photo) return res.status(404).json({ errors:['Foto não encontrada...'] });        
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
+    }  
+
+    // user already liked the photo?
+    if(photo.likes.includes(reqUser._id)){ 
+        return res.status(422).json({ errors:['Foto já curtida...'] })
+    };
+
+    // put userid in photo model > likes array
+    photo.likes.push(reqUser._id);
+    await photo.save();
+    return res.status(200).json({ 
+        photoId: id, userId: reqUser._id, message:'Foto curtida!'  
+    });
+};
+
+
 module.exports = {
     insertPhoto,
     deletePhoto,
     getAllPhotos,
     getUserPhotos,
     getPhotoById,
-    updatePhotoTitle
+    updatePhotoTitle,
+    likePhoto
 };
