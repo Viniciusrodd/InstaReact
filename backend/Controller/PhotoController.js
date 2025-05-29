@@ -28,6 +28,36 @@ const insertPhoto = async (req, res) =>{
 };
 
 
+// delete photo from db
+const deletePhoto = async (req, res) =>{
+    const { id } = req.params;
+    const reqUser = req.user;
+    
+    // get photo
+    let photo;
+    try{
+        photo = await PhotoModel.findById(new mongoose.Types.ObjectId(id));
+        if(!photo) return res.status(404).json({ errors: ['Foto não encontrada...'] });
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto é inválido...'] });
+    }
+
+    // photo not belongs to user?
+    if(!photo.userId.equals(reqUser._id)){
+        return res.status(422).json({ errors:['A foto não pertence ao usuário que tenta removê-la...'] });
+    }
+
+    // delete
+    await PhotoModel.findByIdAndDelete(photo._id);
+
+    return res.status(200).json({
+        id: photo._id, message:'Foto excluída com sucesso!'
+    });
+};
+
+
 module.exports = {
-    insertPhoto
+    insertPhoto,
+    deletePhoto
 };

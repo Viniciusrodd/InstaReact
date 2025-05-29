@@ -45,7 +45,7 @@ const register = async (req, res) =>{
     }
 
     // return token
-    res.status(201).json({
+    return res.status(201).json({
         _id: newUser._id,
         token: tokenGenerate(newUser._id)
     });
@@ -70,7 +70,7 @@ const login = async (req, res) =>{
     }
 
     // user + token
-    res.status(201).json({
+    return res.status(201).json({
         _id: user._id,
         profileImage: user.profileImage,
         token: tokenGenerate(user._id)
@@ -81,7 +81,7 @@ const login = async (req, res) =>{
 // get current logged user
 const getCurrentUser = async (req, res) =>{
     const user = req.user;
-    res.status(200).json(user);
+    return res.status(200).json(user);
 };
 
 
@@ -108,7 +108,7 @@ const update = async (req, res) =>{
 
     // save at bd
     await user.save();
-    res.status(200).json(user);
+    return res.status(200).json(user);
 };
 
 
@@ -124,7 +124,7 @@ const getUserById = async (req, res) =>{
         return res.status(404).json({ errors:['usuário não encontrado'] });
     }
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
 };
 
 
