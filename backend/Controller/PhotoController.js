@@ -204,6 +204,26 @@ const commentPhoto = async (req, res) =>{
 };
 
 
+// search photo by title
+const searchPhotos = async (req, res) =>{
+    const { q } = req.query;
+
+    // get any photo that contains query title
+    let photos;
+    try{
+        photos = await PhotoModel.find({ 
+            title: new RegExp(q, 'i') 
+        }).exec();
+        if(!photos) return res.status(404).json({ errors:['Foto não encontrada...'] });        
+    } 
+    catch(error){
+        return res.status(400).json({ errors:['Titulo de foto inválido...'] });
+    }
+
+    res.status(200).json(photos);
+};
+
+
 module.exports = {
     insertPhoto,
     deletePhoto,
@@ -212,5 +232,6 @@ module.exports = {
     getPhotoById,
     updatePhotoTitle,
     likePhoto,
-    commentPhoto
+    commentPhoto,
+    searchPhotos
 };
