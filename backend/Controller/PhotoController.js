@@ -166,6 +166,44 @@ const likePhoto = async (req, res) =>{
 };
 
 
+// comments in photo
+const commentPhoto = async (req, res) =>{
+    const { id } = req.params;
+    const { comment } = req.body;
+    const reqUser = req.user;
+
+    // get user
+    const user = await UserModel.findById(reqUser._id);
+
+    // get photo
+    let photo;
+    try{
+        photo = await PhotoModel.findById(new mongoose.Types.ObjectId(id));
+        if(!photo) return res.status(404).json({ errors:['Foto não encontrada...'] });        
+    }
+    catch(error){
+        return res.status(400).json({ errors:['Id de foto inválido...'] });
+    }
+    
+    // put userid in photo model > comments array
+    const userComment = {
+        comment,
+        userName: user.name,
+        userImage: user.profileImage,
+        userId: user._id
+    };
+
+    // save
+    photo.comments.push(userComment);
+    await photo.save();
+
+    return res.status(200).json({ 
+        comment: userComment,
+        message: 'O comentário foi adicionado com sucesso!'  
+    });
+};
+
+
 module.exports = {
     insertPhoto,
     deletePhoto,
@@ -173,5 +211,6 @@ module.exports = {
     getUserPhotos,
     getPhotoById,
     updatePhotoTitle,
-    likePhoto
+    likePhoto,
+    commentPhoto
 };
