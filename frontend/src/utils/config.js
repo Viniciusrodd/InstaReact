@@ -1,7 +1,9 @@
-
+// backend links
 export const api = 'http://localhost:5122/api';
 export const upload = 'http://localhost:5122/uploads'
 
+
+// config
 export const requestConfig = (method, data, token = null, image = null) =>{
     let config;
 

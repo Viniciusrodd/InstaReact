@@ -2,10 +2,10 @@
 // importing http config utils
 import { api, requestConfig } from "../utils/config";
 
+
 // register an user
 const register = async (data) =>{
-    const config = requestConfig('POST', data);
-
+    const config = requestConfig('POST', data); //"config" from requestConfig
     try{
         const res = await fetch(api + '/users/register', config)
             .then((res) => res.json())
