@@ -24,7 +24,7 @@ export const register = createAsyncThunk('auth/register',
 
         //check for errors
         if(data.errors){ 
-            return thunkAPI.rejectWithValue(data.errors[0]); // rejecting the request 
+            return thunkAPI.rejectWithValue(data.errors); // rejecting the request 
         }
 
         return data;

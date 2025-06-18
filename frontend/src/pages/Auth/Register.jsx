@@ -7,8 +7,11 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-// my redux states
+// redux states
 import { register, reset } from '../../slices/authSlice';
+
+// components
+import Message from '../../components/Messages/Message';
 
 
 const Register = () => {
@@ -60,7 +63,12 @@ const Register = () => {
                 <input type="password" placeholder='Senha' value={ password } onChange={ (e) => setPassword(e.target.value) } />
                 <input type="password" placeholder='Confirme a senha' value={ confirmPassword } onChange={ (e) => setConfirmPassword(e.target.value) } />
             
-                <input type="submit" value="Cadastrar" />
+                {!loading ? ( 
+                    <input type="submit" value="Cadastrar" /> 
+                ) : (
+                    <input type="submit" value="Aguarde..." disabled /> 
+                )}
+                { error && <Message msg={ error } type='error' /> }
             </form>
 
             <p>
