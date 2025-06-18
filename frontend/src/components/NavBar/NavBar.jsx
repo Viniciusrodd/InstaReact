@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../../Hooks/useAuth';
 
 
-
 const NavBar = () => {
     // user authentication
     const auth = useAuth();

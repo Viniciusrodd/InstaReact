@@ -17,8 +17,7 @@ const initialState = {
 
 // register an user and login
 // "createAsyncThunk" is for async calls... 
-export const register = createAsyncThunk('auth/register',
-    async (user, thunkAPI) =>{
+export const register = createAsyncThunk('auth/register', async (user, thunkAPI) =>{
         // executing register
         const data = await authService.register(user);
 
@@ -30,6 +29,12 @@ export const register = createAsyncThunk('auth/register',
         return data;
     }
 );
+
+
+// logout user
+export const logout = createAsyncThunk('auth/logout', async () =>{
+    await authService.logout();
+})
 
 
 // export slice
@@ -56,6 +61,11 @@ export const authSlice = createSlice({
         }).addCase(register.rejected, (state, action) =>{
             state.loading = false;
             state.error = action.payload;
+            state.user = null;
+        }).addCase(logout.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.success = false;
+            state.error = null;
             state.user = null;
         });
     }
