@@ -7,16 +7,29 @@ import {
     BsSearch, BsHouseDoorFill, BsFillPersonFill, BsFillCameraFill 
 } from 'react-icons/bs'; // "bs" = bootstrap lib
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; 
+import { useDispatch, useSelector } from 'react-redux'; 
 
 // custom hook
 import { useAuth } from '../../Hooks/useAuth';
 
+// redux
+import { logout, reset } from '../../slices/authSlice';
+
 
 const NavBar = () => {
     // user authentication
-    const auth = useAuth();
-    const user = useSelector((state) => state.auth);
+    const { auth } = useAuth();
+    const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    
+
+    const handleLogout = () =>{
+        dispatch(logout());
+        dispatch(reset());
+
+        navigate('/login');
+    }
 
 
     return (
@@ -39,18 +52,20 @@ const NavBar = () => {
                             </li>
                             { user && (
                                 <li>
-                                    <NavLink to={`/user/${user._id}`}>
+                                    <NavLink to={`/`}>
                                         <BsFillCameraFill />
                                     </NavLink>
                                 </li>
                             ) }                        
                             <li>
-                                <NavLink to='/profile'>
+                                <NavLink to='/'>
                                     <BsFillPersonFill />
                                 </NavLink>
                             </li>
                             <li>
-                                <span>Sair</span>
+                                <span onClick={ handleLogout }>
+                                    Sair
+                                </span>
                             </li>
                         </>
                     ) : (
