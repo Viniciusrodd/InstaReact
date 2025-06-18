@@ -5,6 +5,10 @@ import './Auth.css';
 // hooks
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// my redux states
+import { register, reset } from '../../slices/authSlice';
 
 
 const Register = () => {
@@ -14,6 +18,15 @@ const Register = () => {
     const [ password, setPassword ] = useState('');
     const [ confirmPassword, setConfirmPassword ] = useState('');
 
+    // dispatch
+    const dispatch = useDispatch();
+
+    // useSelector(): read states of store
+    const { loading, error } = useSelector((state) => state.auth);
+
+
+    //////// functions
+
 
     // handle form
     const handleSubmit = (e) =>{
@@ -21,8 +34,19 @@ const Register = () => {
 
         // user object
         const user = { name, email, password, confirmPassword };
-        console.log(user);
+
+        // send actions w/ dispatch
+        dispatch(register(user));
     };
+
+
+    // clean all auth states
+    useEffect(() =>{
+        dispatch(reset());
+    }, [dispatch]);
+
+
+    //////// functions
 
 
     return (

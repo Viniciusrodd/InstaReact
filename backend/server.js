@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 // CORS
 app.use(cors({ 
     credentials: true,
-    origin: 'http://localhost/5173' 
+    origin: `http://localhost:${process.env.FRONT_PORT}` 
 }));
 
 // upload files directory

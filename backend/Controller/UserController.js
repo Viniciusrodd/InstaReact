@@ -44,6 +44,10 @@ const register = async (req, res) =>{
         return;
     }
 
+    console.log('-----------------------------------');
+    console.log(`User register with success: ${name}`);
+    console.log('-----------------------------------');
+
     // return token
     return res.status(201).json({
         _id: newUser._id,
