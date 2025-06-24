@@ -58,7 +58,7 @@ const NavBar = () => {
                                 </li>
                             ) }                        
                             <li>
-                                <NavLink to='/'>
+                                <NavLink to='/profile'>
                                     <BsFillPersonFill />
                                 </NavLink>
                             </li>
