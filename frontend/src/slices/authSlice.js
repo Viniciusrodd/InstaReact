@@ -52,7 +52,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) =>{
 );
 
 
-// export slice
+// slice
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

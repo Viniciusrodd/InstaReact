@@ -1,5 +1,5 @@
 
-// importing http config utils
+// config utils
 import { api, requestConfig } from "../utils/config";
 
 
@@ -49,9 +49,8 @@ const login = async (data) =>{
 }
 
 
+// export service
 const authService = {
     register, logout, login
 };
-
-
 export default authService;

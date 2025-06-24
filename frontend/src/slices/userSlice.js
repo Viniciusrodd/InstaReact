@@ -14,6 +14,7 @@ const initialState = {
 };
 
 
+// slice
 export const userSlice = createSlice({
     name: 'user',
     initialState,
