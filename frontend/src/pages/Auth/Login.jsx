@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Message from '../../components/Messages/Message';
 
 // redux
-
+import { login, reset } from '../../slices/authSlice';
 
 
 const Login = () => {
@@ -19,11 +19,27 @@ const Login = () => {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
+    // consts
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.auth);
+
+
     ////// functions
 
+
+    // form
     const handleSubmit = (e) =>{
         e.preventDefault();
+
+        const user = { email, password };
+    
+        dispatch(login(user));
     };
+
+    // clean all states
+    useEffect(() =>{
+        dispatch(reset());
+    }, [dispatch]);
 
 
     ////// jsx
@@ -37,7 +53,12 @@ const Login = () => {
             <form onSubmit={ handleSubmit }>
                 <input type="text" placeholder='E-mail' value={ email || '' } onChange={(e) => setEmail(e.target.value)} />
                 <input type="password" placeholder='Senha' value={ password || '' } onChange={(e) => setPassword(e.target.value)}/>
-                <input type="submit" value="Entrar" />
+                {!loading ? ( 
+                    <input type="submit" value="Entrar" /> 
+                ) : (
+                    <input type="submit" value="Aguarde..." disabled /> 
+                )}
+                { error && <Message msg={ error } type='error' /> }
             </form>
 
             <p>
