@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // redux
-import { profile, resetMessage } from '../../slices/userSlice';
+import { profile, resetMessage, updateProfile } from '../../slices/userSlice';
 
 // components
 import Message from '../../components/Messages/Message';
@@ -50,10 +50,37 @@ const EditProfile = () => {
     }, [user]);
 
     // form
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
 
+        // getting user data
+        const userData = { name };
 
+        // fields verification
+        if(profileImage){
+            userData.profileImage = profileImage;
+        }
+        if(bio){
+            userData.bio = bio;
+        }
+        if(password){
+            userData.password = password;
+        }
+
+        // build form data
+        const formData = new FormData();
+        const userFormData = Object.keys(userData).forEach((key) => 
+            formData.append(key, userData[key])
+        );
+        formData.append('user', userFormData);
+
+        // update profile
+        await dispatch(updateProfile(formData));
+
+        // reset messages
+        setTimeout(() =>{
+            dispatch(resetMessage());
+        }, 2000);
     };
 
     // set image values
@@ -97,9 +124,15 @@ const EditProfile = () => {
                 </label>
                 <label>
                     <span>Quer alterar a senha ?</span>
-                    <input type="password" placeholder='Digite sua nova senha' value={ password || '' } onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" placeholder='Digite sua nova senha' onChange={(e) => setPassword(e.target.value)} />
                 </label>
-                <input type="submit" value="Atualizar" />
+                {!loading ? ( 
+                    <input type="submit" value="Atualizar" /> 
+                ) : (
+                    <input type="submit" value="Aguarde..." disabled /> 
+                )}
+                { error && <Message msg={ error } type='error' /> }
+                { message && <Message msg={ message } type='success' /> }
             </form>
         </div>
     );
