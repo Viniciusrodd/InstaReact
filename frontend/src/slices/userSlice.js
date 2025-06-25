@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // service
-
+import userService from "../services/userService";
 
 // state
 const initialState = {
@@ -14,6 +14,17 @@ const initialState = {
 };
 
 
+//////// functions
+
+
+// get user data
+export const profile = createAsyncThunk('user/profile', async (user, thunkAPI) =>{
+    const token = thunkAPI.getState().auth.user.token; // auth came from "authSlice"
+    const data = await userService.profile(user, token);
+    return data;
+});
+
+
 // slice
 export const userSlice = createSlice({
     name: 'user',
@@ -22,6 +33,19 @@ export const userSlice = createSlice({
         resetMessage: (state) =>{
             state.message = null;
         }
+    },
+    extraReducers: (builder) =>{
+        builder
+        .addCase(profile.pending, (state) =>{
+            state.loading = true;
+            state.error = false;
+        })
+        .addCase(profile.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.success = true;
+            state.error = false;
+            state.user = action.payload;
+        });
     }
 });
 
