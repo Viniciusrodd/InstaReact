@@ -19,7 +19,8 @@ const initialState = {
 
 // get user data
 export const profile = createAsyncThunk('user/profile', async (user, thunkAPI) =>{
-    const token = thunkAPI.getState().auth.user.token; // auth came from "authSlice"
+    const token = thunkAPI.getState().auth.user?.token; // auth came from "authSlice"
+    
     const data = await userService.profile(user, token);
     return data;
 });
@@ -43,7 +44,7 @@ export const userSlice = createSlice({
         .addCase(profile.fulfilled, (state, action) =>{
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.user = action.payload;
         });
     }

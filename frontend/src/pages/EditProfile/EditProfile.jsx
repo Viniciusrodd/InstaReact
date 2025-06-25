@@ -2,14 +2,54 @@
 // css
 import './EditProfile.css';
 
+// utils
+import { upload  } from '../../utils/config';
+
+// hooks
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// redux
+import { profile, resetMessage } from '../../slices/userSlice';
+
+// components
+import Message from '../../components/Messages/Message';
+
 
 
 const EditProfile = () => {
+    // states
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [bio, setBio] = useState("");
+    const [password, setPassword] = useState("");
+    const [profileImage, setProfileImage] = useState("");
+    const [previewImage, setPreviewImage] = useState("");    
+
+    // consts
+    const dispatch = useDispatch();
+    const { user, message, error, loading } = useSelector((state) => state.user);
 
 
     /////// functions    
 
 
+    // load user data
+    useEffect(() =>{
+        dispatch(profile());
+    }, [dispatch]);
+    
+    // fill form w/ user data
+    useEffect(() =>{
+        if(user){
+            setName(user.name);
+            setEmail(user.email);
+            setBio(user.bio);
+            setPassword(user.password);
+        }
+    }, [user]);
+
+    // form
     const handleSubmit = (e) =>{
         e.preventDefault();
 
@@ -29,19 +69,19 @@ const EditProfile = () => {
             {/* image preview */}
         
             <form onSubmit={ handleSubmit }>
-                <input type="text" placeholder='Nome' />
-                <input type="email" placeholder='Email' disabled />
+                <input type="text" placeholder='Nome' value={ name || '' } onChange={(e) => setName(e.target.value)} />
+                <input type="email" placeholder='Email' disabled value={ email || '' } />
                 <label>
                     <span>Imagem do perfil: </span>
                     <input type="file" />
                 </label>
                 <label>
                     <span>Bio: </span>
-                    <input type="text" placeholder='Descrição do perfil' />
+                    <input type="text" placeholder='Descrição do perfil' value={ bio || '' } onChange={(e) => setBio(e.target.value)} />
                 </label>
                 <label>
                     <span>Quer alterar a senha ?</span>
-                    <input type="password" placeholder='Digite sua nova senha' />
+                    <input type="password" placeholder='Digite sua nova senha' value={ password || '' } onChange={(e) => setPassword(e.target.value)} />
                 </label>
                 <input type="submit" value="Atualizar" />
             </form>

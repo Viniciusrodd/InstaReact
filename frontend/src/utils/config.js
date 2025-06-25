@@ -11,12 +11,12 @@ export const requestConfig = (method, data, token = null, image = null) =>{
         config = {
             method,
             body: data,
-            Headers: {}
+            headers: {}
         };
     }else if(method === 'DELETE' || data === null){
         config = {
             method,
-            Headers: {}
+            headers: {}
         };
     }else{ // for insertions:
         config = {
@@ -30,7 +30,7 @@ export const requestConfig = (method, data, token = null, image = null) =>{
 
     // check token
     if(token){
-        config.Headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
