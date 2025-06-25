@@ -20,8 +20,25 @@ const profile = async (data, token) =>{
 };
 
 
+// update user details
+const updateProfile = async (data, token) =>{
+    const config = requestConfig('PUT', data, token, true);
+
+    try{
+        const res = await fetch(api + '/users/', config)
+            .then((res) => res.json())
+            .catch((error) => error)
+
+        return res;
+    }
+    catch(error){
+        console.log(error);
+    }
+};
+
+
 // export service
 const userService = {
-    profile
+    profile, updateProfile
 };
 export default userService;
