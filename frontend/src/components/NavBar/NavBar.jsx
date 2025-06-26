@@ -52,7 +52,7 @@ const NavBar = () => {
                             </li>
                             { user && (
                                 <li>
-                                    <NavLink to={`/`}>
+                                    <NavLink to={`/users/${user._id}`}>
                                         <BsFillCameraFill />
                                     </NavLink>
                                 </li>
