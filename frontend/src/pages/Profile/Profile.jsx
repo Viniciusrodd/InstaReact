@@ -15,12 +15,43 @@ import { useState, useEffect, useRef } from 'react';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
+import { getUserDetails } from '../../slices/userSlice';
 
 
 const Profile = () => {
+    // consts
+    const { id } = useParams();
+    
+    // redux
+    const dispatch = useDispatch();
+    const { user, loading } = useSelector((state) => state.user); // user visited data
+    const { user: userAuth } = useSelector((state) => state.auth); // user authenticated data
+
+    // photo
+
+
+    // load user data
+    useEffect(() =>{
+        dispatch(getUserDetails(id));
+    }, [dispatch, id]);
+
+
+    ///////// jsx
+
+
     return (
-        <div>
-            <h1>Profile page</h1>
+        <div id='profile'>
+            <div className='profile-header'>
+                { loading && <p>Carregando...</p> }
+
+                { user.profileImage && (
+                    <img src={ `${upload}/users/${user.profileImage}` } alt={ user.name } />
+                ) }
+                <div className="profile-description">
+                    <h2>{ user.name }</h2>
+                    <p>{ user.bio }</p>
+                </div>
+            </div>
         </div>
     );
 };
