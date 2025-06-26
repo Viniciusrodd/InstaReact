@@ -21,7 +21,10 @@ import { getUserDetails } from '../../slices/userSlice';
 const Profile = () => {
     // consts
     const { id } = useParams();
-    
+    const newPhotoForm = useRef();
+    const editPhotoForm = useRef();
+
+
     // redux
     const dispatch = useDispatch();
     const { user, loading } = useSelector((state) => state.user); // user visited data
@@ -34,6 +37,11 @@ const Profile = () => {
     useEffect(() =>{
         dispatch(getUserDetails(id));
     }, [dispatch, id]);
+
+    // form
+    const submitHandle = (e) =>{
+        e.preventDefault();
+    };
 
 
     ///////// jsx
@@ -52,6 +60,26 @@ const Profile = () => {
                     <p>{ user.bio }</p>
                 </div>
             </div>
+
+            { id === userAuth._id && (
+                <>
+                    <div className="new-photo" ref={ newPhotoForm }>
+                        <h3>Compartilhe algum momento seu: </h3>
+                        
+                        <form onSubmit={ submitHandle }>
+                            <label>
+                                <span>Título para foto: </span>
+                                <input type="text" placeholder='Insira um título' />    
+                            </label>
+                            <label>
+                                <span>Imagem: </span>
+                                <input type="file" />    
+                            </label>
+                            <input type="submit" value="Postar" />
+                        </form>
+                    </div>
+                </>
+            ) }
         </div>
     );
 };
