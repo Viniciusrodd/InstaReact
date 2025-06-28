@@ -10,13 +10,13 @@ import Message from '../../components/Messages/Message';
 
 // hooks
 import { Link, useParams } from 'react-router-dom';
-import { BsFillEyeFill, BsPencil, BsXLg } from 'react-icons/bs';
+import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs';
 import { useState, useEffect, useRef } from 'react';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserDetails } from '../../slices/userSlice';
-import { publishPhoto, resetMessage } from '../../slices/photoSlice';
+import { publishPhoto, resetMessage, getUserPhotos } from '../../slices/photoSlice';
 
 
 
@@ -44,9 +44,10 @@ const Profile = () => {
     // photo
 
 
-    // load user data
+    // load user data + user photos
     useEffect(() =>{
         dispatch(getUserDetails(id));
+        dispatch(getUserPhotos(id));
     }, [dispatch, id]);
 
     // handle image file
@@ -115,6 +116,32 @@ const Profile = () => {
                     { messagePhoto && <Message msg={ messagePhoto } type='success' /> }
                 </>
             ) }
+
+            <div className="user-photos">
+                <h2>Fotos publicadas: </h2>
+                
+                <div className="photos-container">
+                    { photos && photos.map((photo) => (
+                        <div className="photo" key={ photo._id }>
+                            { photo.image && ( <img src={ `${upload}/photos/${photo.image}` } alt={photo.title} /> ) }
+                            { id === userAuth._id ? (
+                                <div className="actions">
+                                    <Link to={`/photos/${photo._id}`}>
+                                        <BsFillEyeFill />
+                                    </Link>
+                                    
+                                    <BsPencilFill />
+                                    <BsXLg />
+                                </div>
+                            ) : (
+                                <Link className='btn' to={`/photos/${photo._id}`}>Ver</Link>
+                            ) }
+                        </div> 
+                    )) }
+
+                    { photos.length === 0 && <p>Ainda não há fotos publicadas</p> }
+                </div>
+            </div>
         </div>
     );
 };
