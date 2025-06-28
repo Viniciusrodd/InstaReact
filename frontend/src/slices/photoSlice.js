@@ -24,7 +24,8 @@ export const publishPhoto = createAsyncThunk('photo/publish', async (photo, thun
     const token = thunkAPI.getState().auth.user?.token; // auth came from 'authSlice'
 
     const data = await photoService.publishPhoto(photo, token);
-    if(data.erros){
+    
+    if(data.errors){
         return thunkAPI.rejectWithValue(data.errors); // rejecting the request
     }
 
@@ -45,7 +46,7 @@ export const photoSlice = createSlice({
         builder
         .addCase(publishPhoto.pending, (state) =>{
             state.loading = true;
-            state.error = false;
+            state.error = null;
         })
         .addCase(publishPhoto.fulfilled, (state, action) =>{
             state.loading = false;
@@ -58,7 +59,7 @@ export const photoSlice = createSlice({
         .addCase(publishPhoto.rejected, (state, action) =>{
             state.loading = false;
             state.error = action.payload;
-            state.photo = {};
+            state.photo = null;
         })
     }
 });
