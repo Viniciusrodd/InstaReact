@@ -136,7 +136,7 @@ export const photoSlice = createSlice({
 
             state.photos.map((photo) =>{
                 if(photo._id === action.payload.photo._id){
-                    return photo.title === action.payload.photo.title
+                    return (photo.title = action.payload.photo.title);
                 }
                 return photo;
             });
