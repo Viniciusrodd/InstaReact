@@ -16,7 +16,7 @@ import { useState, useEffect, useRef } from 'react';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserDetails } from '../../slices/userSlice';
-import { publishPhoto, resetMessage, getUserPhotos } from '../../slices/photoSlice';
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from '../../slices/photoSlice';
 
 
 
@@ -41,8 +41,12 @@ const Profile = () => {
     ////// functions
 
 
-    // photo
-
+    // reset messages
+    const resetComponentMessages = () =>{
+        setTimeout(() =>{
+            dispatch(resetMessage());
+        }, 2000);
+    };
 
     // load user data + user photos
     useEffect(() =>{
@@ -70,10 +74,15 @@ const Profile = () => {
 
         dispatch(publishPhoto(formData));
         setTitle('');
+    
+        resetComponentMessages();
+    };
 
-        setTimeout(() =>{
-            dispatch(resetMessage());
-        }, 2000);
+    // delete photo
+    const handleDelete = (id) =>{
+        dispatch(deletePhoto(id));
+
+        resetComponentMessages();
     };
 
 
@@ -127,11 +136,10 @@ const Profile = () => {
                             { id === userAuth._id ? (
                                 <div className="actions">
                                     <Link to={`/photos/${photo._id}`}>
-                                        <BsFillEyeFill />
+                                        <BsFillEyeFill /> {/* view photo */}
                                     </Link>
-                                    
-                                    <BsPencilFill />
-                                    <BsXLg />
+                                    <BsPencilFill /> {/* edit photo */}
+                                    <BsXLg onClick={ () => handleDelete(photo._id) } /> {/* delete photo */}
                                 </div>
                             ) : (
                                 <Link className='btn' to={`/photos/${photo._id}`}>Ver</Link>
