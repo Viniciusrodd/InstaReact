@@ -71,9 +71,26 @@ const updatePhoto = async (data, id, token) =>{
 };
 
 
+// get a photo by id
+const getPhoto = async (id) =>{
+    const config = requestConfig('GET');
+
+    try{
+        const res = await fetch(api + '/photos/' + id, config)
+            .then((res) => res.json())
+            .catch((error) => error);
+
+        return res;
+    }
+    catch(error){
+        console.log(error);
+    }
+};
+
+
 // export service
 const photoService = {
     publishPhoto, getUserPhotos, deletePhoto,
-    updatePhoto
+    updatePhoto, getPhoto
 };
 export default photoService;
