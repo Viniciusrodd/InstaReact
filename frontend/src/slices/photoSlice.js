@@ -190,19 +190,17 @@ export const photoSlice = createSlice({
             state.error = null;
 
             // individual photo
-            if(state.photo.like){
-                state.photo.like.push(action.payload.userId);
+            if(state.photo.likes){
+                state.photo.likes.push(action.payload.userId);
             }
 
             // for homepage exibition photo
             state.photos.map((photo) =>{
-                if(photo._id === action.payload.photo.photoId){
+                if(photo._id === action.payload.photoId){
                     return photo.likes.push(action.payload.userId);
                 }
                 return photo;
             });
-
-            state.message = action.payload.message;
         })
         .addCase(like.rejected, (state, action) =>{
             state.loading = false;
