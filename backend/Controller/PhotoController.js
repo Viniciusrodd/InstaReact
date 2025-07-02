@@ -19,7 +19,7 @@ const insertPhoto = async (req, res) =>{
 
     // create photo
     const newPhoto = await PhotoModel.create({
-        image, title, userId: user._id, username: user.name 
+        image, title, userId: user._id, userName: user.name 
     });
 
     if(!newPhoto) return res.status(422).json({ errors:['Houve um problema na criação de foto...'] });
