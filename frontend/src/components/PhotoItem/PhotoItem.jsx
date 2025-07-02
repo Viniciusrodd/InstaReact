@@ -8,16 +8,8 @@ import { upload } from '../../utils/config';
 // hooks
 import { Link } from 'react-router-dom';
 
-import { useEffect } from 'react';
 
 const PhotoItem = ({ photo }) => {
-    
-    useEffect(() =>{
-        if(photo){
-            console.log(photo)
-        }
-    }, [photo])
-
     return (
         <div className='photo-item'>
             { photo.image && (
