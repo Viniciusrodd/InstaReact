@@ -201,6 +201,8 @@ export const photoSlice = createSlice({
                 }
                 return photo;
             });
+
+            state.message = action.payload.message;
         })
         .addCase(like.rejected, (state, action) =>{
             state.loading = false;

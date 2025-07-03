@@ -14,6 +14,7 @@ import LikeContainer from '../../components/LikeContainer/LikeContainer';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useResetComponentMessage } from '../../components/useResetComponentMessage'; // custom hook
 
 // redux
 import { getPhoto, like } from '../../slices/photoSlice';
@@ -25,6 +26,7 @@ const Photo = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     const { photo, loading, error, message } = useSelector((state) => state.photo);
+    const resetMessage = useResetComponentMessage(dispatch); // custom hook
 
 
     ///////// functions
@@ -38,6 +40,8 @@ const Photo = () => {
     // executing a like
     const handleLike = () =>{
         dispatch(like(photo._id));
+
+        resetMessage();
     };
 
     // loading check
@@ -54,6 +58,10 @@ const Photo = () => {
         <div id='photo'>
             <PhotoItem photo={ photo } />            
             <LikeContainer photo={ photo } user={ user } handleLike={ handleLike }/>
+            <div className="message-container">
+                { error && <Message msg={error} type='error' /> }
+                { message && <Message msg={message} type='success' /> }
+            </div>
         </div>
     );
 };
