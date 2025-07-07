@@ -107,8 +107,13 @@ export const comment = createAsyncThunk('photo/comment', async (commentData, thu
 
 
 // get all photos
-export const getPhotos = createAsyncThunk('photos/getall', async () =>{
-    const data = await photoService.getPhotos();
+export const getPhotos = createAsyncThunk('photos/getall', async (_, thunkAPI) =>{ // '_' faz o redux entender que o 1' argumento é dispensável...
+    const token = thunkAPI.getState().auth.user?.token;
+
+    const data = await photoService.getPhotos(token);
+    if(data.errors){
+        return thunkAPI.rejectWithValue(data.errors);
+    }
 
     return data;
 });
