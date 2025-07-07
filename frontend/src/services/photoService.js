@@ -146,7 +146,7 @@ const searchPhotos = async (query, token) =>{
     try{
         const res = await fetch(api + '/photos/search?q=' + query, config)
             .then((res) => res.json())
-            .error((error) => error);
+            .catch((error) => error);
 
         return res;
     }
