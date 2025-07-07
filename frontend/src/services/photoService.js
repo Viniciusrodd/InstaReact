@@ -140,7 +140,7 @@ const getPhotos = async (token) =>{
 
 
 // search photo by title
-const searchPhotos = async (query) =>{
+const searchPhotos = async (query, token) =>{
     const config = requestConfig('GET', null, token);
 
     try{

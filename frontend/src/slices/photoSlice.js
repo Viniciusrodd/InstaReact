@@ -119,6 +119,19 @@ export const getPhotos = createAsyncThunk('photos/getall', async (_, thunkAPI) =
 });
 
 
+// search photo by title
+export const searchPhotos = createAsyncThunk('photos/search', async (query, thunkAPI) =>{
+    const token = thunkAPI.getState().auth.user?.token;
+
+    const data = await photoService.searchPhotos(query, token);
+    if(data.errors){
+        return thunkAPI.rejectWithValue(data.errors);
+    }
+
+    return data;
+});
+
+
 // slice
 export const photoSlice = createSlice({
     name: 'photo',
@@ -256,7 +269,18 @@ export const photoSlice = createSlice({
             state.success = true;
             state.error = null;
             state.photos = action.payload;
-        })}
+        })
+        .addCase(searchPhotos.pending, (state) =>{
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(searchPhotos.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.photos = action.payload;
+        })    
+    }    
 });
 
 
